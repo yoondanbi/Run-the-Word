@@ -18,10 +18,46 @@ const Tab = createBottomTabNavigator();
 // HomeScreen에서 다른 화면으로 이동하는 버튼을 추가할 때 사용
 const HomeStack = () => (
   <Stack.Navigator>
-    <Stack.Screen name="Home" component={HomeScreen} />
+    <Stack.Screen
+      name="Home"
+      component={HomeScreen}
+      options={{
+        headerTitle: () => (
+          <Icon name="home-outline" size={30} color="#6A0DAD" />
+        ), // 상단에 홈 아이콘 표시
+      }}
+    />
     <Stack.Screen name="WordTest" component={WordTestScreen} />
     <Stack.Screen name="WrongNote" component={WrongNoteScreen} />
     <Stack.Screen name="WordStudy" component={WordStudyScreen} />
+  </Stack.Navigator>
+);
+
+const MyPageStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="MyPage"
+      component={MyPageScreen}
+      options={{
+        headerTitle: () => (
+          <Icon name="person-outline" size={30} color="#6A0DAD" />
+        ), // 상단에 마이페이지 아이콘 표시
+      }}
+    />
+  </Stack.Navigator>
+);
+
+const SettingsStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={{
+        headerTitle: () => (
+          <Icon name="settings-outline" size={30} color="#6A0DAD" />
+        ), // 상단에 설정 아이콘 표시
+      }}
+    />
   </Stack.Navigator>
 );
 
@@ -46,8 +82,8 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Home" component={HomeStack} />
-        <Tab.Screen name="MyPage" component={MyPageScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="MyPage" component={MyPageStack} />
+        <Tab.Screen name="Settings" component={SettingsStack} />
       </Tab.Navigator>
     </NavigationContainer>
   );
