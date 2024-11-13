@@ -1,189 +1,212 @@
-// src/components/HomeScreen.js
-import React, { useRef, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   TouchableOpacity,
-  Animated,
   StyleSheet,
-  Dimensions,
+  Animated,
+  PanResponder,
+  Image,
 } from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
-const { height } = Dimensions.get("window");
+export default function HomeScreen() {
+  const navigation = useNavigation();
+  const translateY = new Animated.Value(0);
+  const userName = "Danbi";
 
-const HomeScreen = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const slideAnim = useRef(new Animated.Value(height)).current;
-  const navigation = useNavigation(); // 네비게이션 훅 사용
-
-  const toggleGoalPanel = () => {
-    if (isVisible) {
-      Animated.timing(slideAnim, {
-        toValue: height,
-        duration: 300,
-        useNativeDriver: false,
-      }).start(() => setIsVisible(false));
-    } else {
-      setIsVisible(true);
-      Animated.timing(slideAnim, {
-        toValue: height * 0.7,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-    }
-  };
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderMove: (e, gestureState) => {
+      if (gestureState.dy < 0) {
+        translateY.setValue(200 + gestureState.dy);
+      } else if (gestureState.dy > 0 && translateY._value < 200) {
+        translateY.setValue(gestureState.dy);
+      }
+    },
+    onPanResponderRelease: () => {
+      if (translateY._value < 100) {
+        Animated.spring(translateY, {
+          toValue: 0,
+          useNativeDriver: true,
+        }).start();
+      } else {
+        Animated.spring(translateY, {
+          toValue: 100,
+          useNativeDriver: true,
+        }).start();
+      }
+    },
+  });
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerText}>danbi님, 안녕하세요!</Text>
-      </View>
-
-      <View style={styles.content}>
+      <Text style={styles.greeting}>{userName}님, 안녕하세요!</Text>
+      <View style={styles.cardContainer}>
         <View style={styles.row}>
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => navigation.navigate("WordTest")}
+          <LinearGradient
+            colors={["#FFFEE3", "#FFFD9E"]}
+            style={styles.gradientBackground}
           >
-            <Text style={styles.boxText}>단어 시험</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.box}
-            onPress={() => navigation.navigate("WrongNote")}
-          >
-            <Text style={styles.boxText}>오답 노트</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity
-          style={styles.largeBox}
-          onPress={() => navigation.navigate("WordStudy")}
-        >
-          <Text style={styles.boxText}>단어 학습</Text>
-        </TouchableOpacity>
-      </View>
-
-      {!isVisible && (
-        <TouchableOpacity style={styles.goalButton} onPress={toggleGoalPanel}>
-          <Icon name="menu-outline" size={24} color="#6A0DAD" />
-          <Text style={styles.goalButtonText}>오늘 목표 보기</Text>
-        </TouchableOpacity>
-      )}
-
-      {isVisible && (
-        <Animated.View style={[styles.goalPanel, { top: slideAnim }]}>
-          <View style={styles.goalContent}>
             <TouchableOpacity
-              style={styles.closeButton}
-              onPress={toggleGoalPanel}
+              style={styles.touchableArea}
+              onPress={() => navigation.navigate("WordTestScreen")}
             >
-              <Icon name="menu-outline" size={24} color="#6A0DAD" />
-              <Text style={styles.closeButtonText}>목표 숨기기</Text>
+              <Text style={styles.cardTitle}>단어 시험</Text>
+              <Image
+                source={require("../assets/exam.png")}
+                style={styles.cardImage}
+              />
             </TouchableOpacity>
-            <Text style={styles.goalText}>오늘 목표까지 38개 남았어요!</Text>
-          </View>
-        </Animated.View>
-      )}
+          </LinearGradient>
+          <LinearGradient
+            colors={["#DEFFEE", "#91FFFC"]}
+            style={styles.gradientBackground}
+          >
+            <TouchableOpacity
+              style={styles.touchableArea}
+              onPress={() => navigation.navigate("WrongNoteScreen")}
+            >
+              <Text style={styles.cardTitleTopCenter}>오답 노트</Text>
+              <Image
+                source={require("../assets/wrong.png")}
+                style={styles.cardImageLeftBottom}
+              />
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+        <View style={styles.row}>
+          <LinearGradient
+            colors={["#FAA2FF", "#FDE3FF"]}
+            style={styles.gradientBackground}
+          >
+            <TouchableOpacity
+              style={[styles.touchableArea, styles.wideCard]}
+              onPress={() => navigation.navigate("WordStudyScreen")}
+            >
+              <Text style={styles.cardTitle2}>단어 학습</Text>
+              <Image
+                source={require("../assets/book.png")}
+                style={styles.cardImageRightBottom}
+              />
+            </TouchableOpacity>
+          </LinearGradient>
+        </View>
+      </View>
+      <Animated.View
+        {...panResponder.panHandlers}
+        style={[styles.pullUpBar, { transform: [{ translateY }] }]}
+      >
+        <Image
+          source={require("../assets/line.png")}
+          style={styles.dragHandleImage}
+        />
+        <Image
+          source={require("../assets/line.png")}
+          style={styles.dragHandleImage}
+        />
+        <Text style={styles.goalText}>오늘 목표까지 38개 남았어요!</Text>
+        <View style={styles.progressContainer}>
+          <Image
+            source={require("../assets/success.png")}
+            style={styles.progressIcon}
+          />
+          <Text style={styles.progressText}>20%</Text>
+        </View>
+      </Animated.View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
     backgroundColor: "#6A0DAD",
+    paddingTop: 40,
   },
-  header: {
-    paddingTop: 50,
-    paddingBottom: 20,
-    alignItems: "center",
+  greeting: {
+    fontSize: 18,
+    color: "#fff",
+    marginBottom: 20,
+    alignSelf: "flex-start",
+    marginLeft: 20,
   },
-  headerText: {
-    fontSize: 20,
-    color: "#FFFFFF",
-  },
-  content: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  cardContainer: { width: "90%", marginTop: 20 },
   row: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    width: "100%",
-    marginBottom: 20,
+    justifyContent: "space-between",
+    marginBottom: 10,
   },
-  box: {
-    width: "45%",
-    height: 270,
-    backgroundColor: "#FFD700",
+  dragHandleImage: {
+    width: 50,
+    height: 4,
+  },
+  gradientBackground: {
+    flex: 1,
     borderRadius: 10,
+    margin: 5,
+    overflow: "hidden",
+    justifyContent: "center", // 세로 가운데 정렬
+    alignItems: "center", // 가로 가운데 정렬
+    height: 190,
+  },
+  touchableArea: {
+    flex: 1,
+    width: "100%", // 터치 가능한 영역을 LinearGradient와 동일하게
     justifyContent: "center",
     alignItems: "center",
   },
-  largeBox: {
-    width: "92%",
-    height: 150,
-    backgroundColor: "#FF69B4",
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
+  wideCard: {
+    width: "90%",
+    alignSelf: "center",
   },
-  boxText: {
-    fontSize: 35,
+  cardTitle: {
+    fontSize: 20,
+    marginBottom: 30,
     fontWeight: "bold",
-    color: "#000000",
   },
-  goalButton: {
-    backgroundColor: "#FFFFFF",
-    padding: 15,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  goalButtonText: {
-    color: "#6A0DAD",
+  cardTitle2: {
+    fontSize: 25,
     fontWeight: "bold",
-    marginLeft: 8,
-  },
-  goalPanel: {
     position: "absolute",
+    top: 10,
+    left: 10,
+  },
+  cardImageRightBottom: {
+    width: 100,
+    height: 100,
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+  },
+  cardImageLeftBottom: {
+    width: 80,
+    height: 105.36,
+    position: "absolute",
+    bottom: 10,
+    left: 10,
+  },
+  cardImage: {
+    width: 100,
+    height: 100,
+  },
+  pullUpBar: {
+    position: "absolute",
+    bottom: 0,
     width: "100%",
-    height: "40%", // 패널 높이
-    backgroundColor: "#FFFFFF",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
+    padding: 20,
+    backgroundColor: "#EDE7F6",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
     alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 10,
   },
-  goalText: {
-    fontSize: 18,
-    color: "purple",
+  cardTitleTopCenter: {
+    fontSize: 20,
     fontWeight: "bold",
-    textAlign: "center",
-  },
-  closeButton: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  closeButtonText: {
-    color: "#6A0DAD",
-    fontWeight: "bold",
-  },
-  goalContent: {
-    width: "100%",
-    height: "100%",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 10,
-    alignItems: "center",
-    shadowColor: "#000",
+    position: "absolute",
+    top: 20,
+    alignSelf: "center",
   },
 });
-
-export default HomeScreen;
