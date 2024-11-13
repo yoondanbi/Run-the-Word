@@ -27,9 +27,9 @@ const HomeStack = () => (
         ), // 상단에 홈 아이콘 표시
       }}
     />
-    <Stack.Screen name="WordTest" component={WordTestScreen} />
-    <Stack.Screen name="WrongNote" component={WrongNoteScreen} />
-    <Stack.Screen name="WordStudy" component={WordStudyScreen} />
+    <Stack.Screen name="WordTestScreen" component={WordTestScreen} />
+    <Stack.Screen name="WrongNoteScreen" component={WrongNoteScreen} />
+    <Stack.Screen name="WordStudyScreen" component={WordStudyScreen} />
   </Stack.Navigator>
 );
 
