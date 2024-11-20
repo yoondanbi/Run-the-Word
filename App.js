@@ -10,6 +10,9 @@ import SettingsScreen from "./components/SettingsScreen";
 import WordTestScreen from "./components/WordTestScreen";
 import WrongNoteScreen from "./components/WrongNoteScreen";
 import WordStudyScreen from "./components/WordStudyScreen";
+import StudyLevelScreen from "./components/StudyLevelScreen";
+import TestLevelScreen from "./components/TestLevelScreen";
+import WrongNoteLevelScreen from "./components/WrongNoteLevelScreen";
 
 // Stack Navigator 정의
 const Stack = createStackNavigator();
@@ -30,6 +33,10 @@ const HomeStack = () => (
     <Stack.Screen name="WordTestScreen" component={WordTestScreen} />
     <Stack.Screen name="WrongNoteScreen" component={WrongNoteScreen} />
     <Stack.Screen name="WordStudyScreen" component={WordStudyScreen} />
+
+    <Stack.Screen name="StudyLevelScreen" component={StudyLevelScreen} />
+    <Stack.Screen name="TestLevelScreen" component={TestLevelScreen} />
+    <Stack.Screen name="WrongNoteLevelScreen" component={WrongNoteLevelScreen} />
   </Stack.Navigator>
 );
 
@@ -58,6 +65,22 @@ const SettingsStack = () => (
         ), // 상단에 설정 아이콘 표시
       }}
     />
+  </Stack.Navigator>
+);
+
+// WordStudyScreen에서 다른 화면으로 이동하는 리스트들을 추가할 때 사용
+const WordStudyStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="WordStudy"
+      component={WordStudyScreen}
+      options={{
+        headerTitle: () => (
+          <Icon name="home-outline" size={30} color="#6A0DAD" />
+        ), // 상단에 홈 아이콘 표시
+      }}
+    />
+    <Stack.Screen name="StudyLevelScreen" component={StudyLevelScreen} />
   </Stack.Navigator>
 );
 
