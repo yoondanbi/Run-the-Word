@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   cardTitle: { fontSize: 25, marginLeft: 10, marginTop: 10, fontWeight: 'bold' },
-  goal: { marginLeft: 230, marginTop: 70, fontSize: 14 },
+  goal: { marginLeft: 220, marginTop: 70, fontSize: 14 },
 });
 
 export default StudyLevelScreen;
