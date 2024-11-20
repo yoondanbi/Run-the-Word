@@ -1,16 +1,16 @@
-// src/components/WordTestScreen.js
+// src/components/TestLevelScreen.js
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-
+const goalCount=50;
 const categories = [
-  { id: '1', title: '초등 영단어', progress: '12/200' },
-  { id: '2', title: '수능 영단어', progress: '37/200' },
-  { id: '3', title: '토익 영단어', progress: '2/200' },
+  { id: '1', title: 'Chap 1', goal: goalCount },
+  { id: '2', title: 'Chap 2', goal: goalCount },
+  { id: '3', title: 'Chap 3', goal: goalCount },
 ];
 
-const WordTestScreen = ({ navigation }) => {
+const TestLevelScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -29,7 +29,7 @@ const WordTestScreen = ({ navigation }) => {
                 style={styles.cardGradientBackground}
               >
                 <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.progress}>학습률: {item.progress}</Text>
+                <Text style={styles.goal}>단어 갯수: {item.goal}</Text>
               </LinearGradient>
             </TouchableOpacity>
           )}
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   cardTitle: { fontSize: 25, marginLeft: 10, marginTop: 10, fontWeight: 'bold' },
-  progress: { marginLeft: 250, marginTop: 70, fontSize: 14 },
+  goal: { marginLeft: 230, marginTop: 70, fontSize: 14 },
 });
 
-export default WordTestScreen;
+export default TestLevelScreen;

@@ -1,16 +1,15 @@
-// src/components/WordTestScreen.js
+// src/components/WrongNoteLevelScreen.js
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-
 const categories = [
-  { id: '1', title: '초등 영단어', progress: '12/200' },
-  { id: '2', title: '수능 영단어', progress: '37/200' },
-  { id: '3', title: '토익 영단어', progress: '2/200' },
+  { id: '1', title: 'Chap 1', progress: '5/50' },
+  { id: '2', title: 'Chap 2', progress: '3/50' },
+  { id: '3', title: 'Chap 3', progress: '2/50' },
 ];
 
-const WordTestScreen = ({ navigation }) => {
+const WrongNoteLevelScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -22,14 +21,14 @@ const WordTestScreen = ({ navigation }) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               style={styles.card}
-              onPress={() => navigation.navigate('TestLevelScreen', { category: item.title })}
+              onPress={() => navigation.navigate('WrongNoteLevelScreen', { category: item.title })}
             >
               <LinearGradient
-                colors={["#FFFEE3", "#FFFD9E"]}
+                colors={["#DEFFEE", "#91FFFC"]}
                 style={styles.cardGradientBackground}
               >
                 <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.progress}>학습률: {item.progress}</Text>
+                <Text style={styles.progress}>오답 갯수: {item.progress}</Text>
               </LinearGradient>
             </TouchableOpacity>
           )}
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   cardTitle: { fontSize: 25, marginLeft: 10, marginTop: 10, fontWeight: 'bold' },
-  progress: { marginLeft: 250, marginTop: 70, fontSize: 14 },
+  progress: { marginLeft: 250, marginTop: 70, fontSize: 14 }
 });
 
-export default WordTestScreen;
+export default WrongNoteLevelScreen;
