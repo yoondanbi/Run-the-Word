@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 
 
 const categories = [
-  { id: '1', title: '초등 영단어', progress: '12/200' },
+  { id: '1', title: '초등 영단어', progress: '11/200' },
   { id: '2', title: '수능 영단어', progress: '37/200' },
   { id: '3', title: '토익 영단어', progress: '2/200' },
 ];
